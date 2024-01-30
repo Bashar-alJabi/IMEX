@@ -1,0 +1,35 @@
+.search {
+    background-color: inherit;
+    color: inherit;
+    border: 1px solid #555;
+    border-radius: 3rem;
+    padding: .5rem 1rem;
+    width: 50%;
+    &:focus {
+        outline: none;
+    }
+}
+
+.link {
+    color: inherit;
+}
+
+.title {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	line-clamp: 1;
+	-webkit-box-orient: vertical;
+}
+
+.summary {
+    overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	-webkit-box-orient: vertical;
+}
+
+.genres {
+    padding-top: .5rem;
+}

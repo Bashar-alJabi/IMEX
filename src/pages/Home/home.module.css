@@ -1,0 +1,19 @@
+.slider {
+    width: 100%;
+    height: calc(100vh - 128px);
+    @media (max-width: 600px) {
+        height: calc(100vh - 112px);
+    }
+}
+
+.caption {
+    background-color: #ccc;
+    backdrop-filter: blur(50px);
+    color: #fff;
+    border-radius: 1rem;
+    width: fit-content;
+    height: fit-content;
+    padding: 2rem;
+    left: 50%;
+    transform: translate(-50%, -3rem);
+}

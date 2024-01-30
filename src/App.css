@@ -1,0 +1,33 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
+}
+html {
+	overflow-x: hidden;
+}
+body {
+	font-family: "Roboto", sans-serif;
+	min-height: 100vh;
+}
+
+a {
+	text-decoration: none;
+}
+
+.theme {
+	transition: .5s all ease-in-out;
+}
+
+/* Start Scrollbar */
+::-webkit-scrollbar {
+	width: 15px;
+}
+::-webkit-scrollbar-track {
+	background-color: #222;
+}
+::-webkit-scrollbar-thumb {
+	background-color: #444;
+}
+/* End Scrollbar */
