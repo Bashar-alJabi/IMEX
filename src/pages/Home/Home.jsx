@@ -28,9 +28,9 @@ const Home = () => {
 				<Spinner animation="border" className='m-auto' />
 				:
 				<Carousel fade data-bs-theme="dark" className='flex-grow-1'>
-					{customMovies && customMovies.map(movie =>
+					{customMovies.map(movie =>
 						<Carousel.Item interval={2000} key={movie.id} className={styles.slider}>
-							<img className="w-100 h-100 object-fit-cover" src={movie.show.image.original} alt={movie.show.name} />
+							<img className="w-100 h-100 object-fit-cover" src={movie.show.image.medium} alt={movie.show.name} />
 							<Link to={movie.show.url} target='_blank'>
 								<Carousel.Caption className={styles.caption}>
 									<h2 className='text-black'>{movie.show.name}</h2>

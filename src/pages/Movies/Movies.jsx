@@ -1,6 +1,5 @@
-import { Box, Card, CardActionArea, CardContent, CardMedia, Container, FormControl, InputLabel, MenuItem, Pagination, Select, Stack, Typography } from '@mui/material';
+import { Box, Card, CardActionArea, CardContent, CardMedia, Container, FormControl, InputLabel, MenuItem, Pagination, Select, Skeleton, Stack, Typography } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchMovies } from '../../rtk/slices/moviesSlice';
@@ -28,7 +27,7 @@ const Movies = () => {
         (movie.show.name.toLowerCase().includes(search.toLowerCase()))
         &&
         (category === '' || category === 'All' || movie.show.genres.includes(category))
-    )
+    );
 
     const total = filteredMovies.length;
     const itemsPerPage = 3;
@@ -38,21 +37,31 @@ const Movies = () => {
     const end = start + itemsPerPage;
     const finalMovies = filteredMovies.slice(start, end);
 
-    const handlePageClick = (e, value) => {
+    const handlePageClick = (_, value) => {
 		setPage(value);
 	};
 
+    const HandleSearchSelect = (func, val) => {
+        setLoading(true);
+        func(val);
+        setPage(1);
+        const debounce = setTimeout(() => {
+            setLoading(false);
+        }, 500);
+        return () => clearTimeout(debounce);
+    }
+
+    const handleSearch = (e) => {
+        HandleSearchSelect(setSearch, e.target.value)
+    }
+
     const handleSelect = (e) => {
-        setCat(e.target.value);
+        HandleSearchSelect(setCat, e.target.value)
     };
 
     const handleGetMovie = (e) => {
-        setCategory(e.target.dataset.cat)
+        setCategory(e.target.dataset.cat);
     };
-
-    const handleSearch = (e) => {
-        setSearch(e.target.value)
-    }
 
 	return (
         <Container className='d-flex flex-column justify-content-between gap-4 my-4'>
@@ -70,25 +79,37 @@ const Movies = () => {
                 </Box>
             </div>
             {loading ?
-                <Spinner animation="border" className='m-auto' />
+                <div className='d-flex justify-content-center align-items-center gap-3 flex-wrap'>
+                    {finalMovies.map((_, index) =>
+                        <div key={index}>
+                            <Skeleton variant="rectangular" width={300} height={140} />
+                            <Skeleton />
+                            <Skeleton width="60%" />
+                        </div>
+                    )}
+                </div>
             :
                     <div className='d-flex justify-content-center align-items-center gap-3 flex-wrap'>
-                        {finalMovies && finalMovies.map(movie =>
-                            <Card key={movie.id} sx={{ width: 300, }}>
-                                <Link to={movie.show.url} target='_blank' className={styles.link}>
-                                    <CardActionArea>
-                                        <CardMedia component="img" height="140" image={movie.show.image.medium} alt={movie.show.name} />
-                                        <CardContent>
-                                            <Typography gutterBottom variant="h5" component="div" className={styles.title}>{movie.show.name}</Typography>
-                                            <Typography variant="body2" color="text.secondary" className={styles.summary}>{movie.show.summary}</Typography>
-                                            <Typography variant="body2" className={styles.genres}>
-                                                {movie.show.genres.length > 0 ? movie.show.genres.join` ` : 'Unknown'}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Link>
-                            </Card>
-                        )}
+                        {finalMovies.length === 0 ?
+                            <p className='text-white-50'>No Results Found</p>
+                            :
+                            finalMovies.map(movie =>
+                                <Card key={movie.id} sx={{ width: 300, }}>
+                                    <Link to={movie.show.url} target='_blank' className={styles.link}>
+                                        <CardActionArea>
+                                            <CardMedia component="img" height="140" image={movie.show.image.medium} alt={movie.show.name} />
+                                            <CardContent>
+                                                <Typography gutterBottom variant="h5" component="div" className={styles.title}>{movie.show.name}</Typography>
+                                                <Typography variant="body2" color="text.secondary" className={styles.summary}>{movie.show.summary}</Typography>
+                                                <Typography variant="body2" className={styles.genres}>
+                                                    {movie.show.genres.length > 0 ? movie.show.genres.join` ` : 'Unknown'}
+                                                </Typography>
+                                            </CardContent>
+                                        </CardActionArea>
+                                    </Link>
+                                </Card>
+                            )
+                        }
                     </div>
             }
             <Stack spacing={2} className='mx-auto'>
